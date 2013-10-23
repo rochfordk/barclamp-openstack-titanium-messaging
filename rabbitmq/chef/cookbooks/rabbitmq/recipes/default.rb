@@ -205,38 +205,19 @@ service node['rabbitmq']['service_name'] do
       action [ :enable, :start ]
 end
 
-file = File.open('/var/log/jez.log', File::WRONLY | File::CREAT)
-log = Logger.new(file)
-log.level = Logger::WARN
-log.debug("Created logger")
-log.info("Program started")
-log.warn("Nothing to do!")
-log.error("Platform family: #{["platform_family"]}")
-
 rmcont1hostname = rmcont1.split('.')
 rmcont2hostname = rmcont2.split('.')
 rmcont3hostname = rmcont3.split('.')
 
-log.warn(node[:hostname])
-log.warn(rmcont1)
-log.warn(rmcont1hostname)
-log.warn(rmcont2)
-log.warn(rmcont2hostname)
-log.warn(rmcont3)
-log.warn(rmcont3hostname)
-
-
 
 if node[:hostname] == rmcont2hostname[0]
   execute "join-cluster1" do
-     log.warn("rabbitmqctl join_cluster rabbit@"+rmcont1hostname[0])
      command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
   end
 end
 
 if node[:hostname] == rmcont3hostname[0]
   execute "join-cluster2" do
-     log.warn("rabbitmqctl join_cluster rabbit@"+rmcont1hostname[0])
      command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
   end
 end
