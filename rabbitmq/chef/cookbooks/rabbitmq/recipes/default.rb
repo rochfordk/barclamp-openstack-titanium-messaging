@@ -166,7 +166,7 @@ end
 
 if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)
   # get ip addresses - Barclamp proposal needs to be coded and not hard coded
-   service_name = node[:rabbitmq][:cluster_role]
+   service_name = node[:rabbitmq][:config][:environment]
    proposal_name = service_name.split('-')
    bcproposal = "bc-rabbitmq-"+proposal_name[2]
    getrmip_db = data_bag_item('crowbar', bcproposal)
