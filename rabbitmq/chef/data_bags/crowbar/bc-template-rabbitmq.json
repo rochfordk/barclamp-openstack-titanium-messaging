@@ -4,7 +4,7 @@
   "attributes": {
      "rabbitmq": {
          "port": 5672,
-         "password": "",
+         "password": "c0mpute",
          "user": "nova",
          "vhost": "/nova"
     }

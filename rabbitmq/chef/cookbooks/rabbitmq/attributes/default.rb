@@ -20,8 +20,9 @@ default['rabbitmq']['config_root'] = "/etc/rabbitmq"
 default['rabbitmq']['erlang_cookie_path'] = '/var/lib/rabbitmq/.erlang.cookie'
 
 # rabbitmq.config defaults
-default['rabbitmq']['default_user'] = 'guest'
-default['rabbitmq']['default_pass'] = 'guest'
+default['rabbitmq']['default_user'] = 'nova'
+default['rabbitmq']['default_pass'] = 'c0mpute'
+default['rabbitmq']['password'] = 'c0mpute'
 
 # bind erlang networking to localhost
 default['rabbitmq']['local_erl_networking'] = false
@@ -62,13 +63,13 @@ default['rabbitmq']['tcp_listen_exit_on_close'] = false
 default['rabbitmq']['tcp_listen_keepalive'] = false
 
 #virtualhosts
-default['rabbitmq']['virtualhosts'] = []
+default['rabbitmq']['virtualhosts'] = "/nova"
 default['rabbitmq']['disabled_virtualhosts'] = []
 
 #users
 default['rabbitmq']['enabled_users'] =
-  [{ :name => "guest", :password => "guest", :rights =>
-    [{:vhost => nil , :conf => ".*", :write => ".*", :read => ".*"}]
+  [{ :name => "nova", :password => "c0mpute", :rights =>
+    [{:vhost => "/nova" , :conf => ".*", :write => ".*", :read => ".*"}]
   }]
 default['rabbitmq']['disabled_users'] =[]
 

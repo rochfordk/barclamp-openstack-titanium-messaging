@@ -69,13 +69,13 @@ attribute "rabbitmq/erlang_cookie",
 attribute "rabbitmq/virtualhosts",
   :display_name => "Virtualhosts on rabbitmq instance",
   :description => "List all virtualhosts that will exist",
-  :default => [],
+  :default => "/nova",
   :type => "array"
 
 attribute "rabbitmq/enabled_users",
   :display_name => "Users and their rights on rabbitmq instance",
   :description => "Users and description of their rights",
-  :default => [{ :name => "guest", :password => "guest", :rights => [{:vhost => nil , :conf => ".*", :write => ".*", :read => ".*"}]}],
+  :default => [{ :name => "nova", :password => "c0mpute", :rights => [{:vhost => "/nova" , :conf => ".*", :write => ".*", :read => ".*"}]}],
   :type => "array"
 
 attribute "rabbitmq/disabled_users",
