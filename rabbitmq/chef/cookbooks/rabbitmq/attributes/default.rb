@@ -6,7 +6,7 @@ default['rabbitmq']['use_distro_version'] = false
 # being nil, the rabbitmq defaults will be used
 default['rabbitmq']['nodename']  = nil
 default['rabbitmq']['address']  = nil
-default['rabbitmq']['port']  = nil
+default['rabbitmq']['port']  = 5672
 default['rabbitmq']['config'] = nil
 default['rabbitmq']['logdir'] = nil
 default['rabbitmq']['mnesiadir'] = "/var/lib/rabbitmq/mnesia"
