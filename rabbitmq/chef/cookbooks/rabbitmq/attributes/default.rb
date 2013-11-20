@@ -68,7 +68,7 @@ default['rabbitmq']['disabled_virtualhosts'] = []
 
 #users
 default['rabbitmq']['enabled_users'] =
-  [{ :name => "nova", :password => "c0mpute", :rights =>
+  [{ :name => "nova", :password => "c0mpute", :tag => "management", :rights =>
     [{:vhost => "/nova" , :conf => ".*", :write => ".*", :read => ".*"}]
   }]
 default['rabbitmq']['disabled_users'] =[]
