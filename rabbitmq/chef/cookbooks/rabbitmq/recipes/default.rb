@@ -210,16 +210,16 @@ rmcont2hostname = rmcont2.split('.')
 rmcont3hostname = rmcont3.split('.')
 
 
-if node[:hostname] == rmcont2hostname[0]
-  execute "join-cluster1" do
-     command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
-  end
-end
+#if node[:hostname] == rmcont2hostname[0]
+#  execute "join-cluster1" do
+#     command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
+#  end
+#end
 
-if node[:hostname] == rmcont3hostname[0]
-  execute "join-cluster2" do
-     command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
-  end
-end
+#if node[:hostname] == rmcont3hostname[0]
+#  execute "join-cluster2" do
+#     command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
+#  end
+#end
 
 
