@@ -2,7 +2,7 @@
 # Keith Rochford - Dell Cloud Centre of Excellence, Dublin
 # ./check_rabbit_cluster.py -h 10.125.0.11 -t 15672 -u guest -p guest -n 2
  
-import getopt, sys, urllib2, simplejson 
+import getopt, sys, urllib2, json 
 
 nagios_codes = dict(OK=0, WARNING=1, CRITICAL=2, UNKNOWN=3, DEPENDENT=4)
 
@@ -37,7 +37,7 @@ def check_node_count(host, port, user, password, benchmark):
 		elif hasattr(e, 'code'):
 			return {'code':'UNKNOWN', 'msg': "UKNOWN - Server Error: - "+ str(e.code)}
 	else:
-		json_object = simplejson.load(response)
+		json_object = json.load(response)
 		cluster_size = len(json_object)
 		if int(cluster_size) >= int(benchmark):
 			return {'code':'OK', 'msg': 'Cluster Node count: '+str(cluster_size)}
