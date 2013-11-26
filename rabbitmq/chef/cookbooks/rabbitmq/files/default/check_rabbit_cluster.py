@@ -29,7 +29,7 @@ def check_node_count(host, port, user, password, benchmark):
 	
 	# use the opener to fetch a URL
 	try:
-	    response = opener.open(top_level_url+'/api/nodes')
+	    response = opener.open(top_level_url+'/api/nodes', timeout=10)
 	    
 	except urllib2.URLError as e:
 		if hasattr(e, 'reason'):
