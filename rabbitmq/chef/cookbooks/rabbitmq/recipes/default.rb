@@ -174,9 +174,12 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
    rmcont2 = getrmip_db["deployment"]["rabbitmq"]["elements"]["rabbitmq"][1]
    rmcont3 = getrmip_db["deployment"]["rabbitmq"]["elements"]["rabbitmq"][2]
    cluster_nodes = Array.new
-   cluster_nodes << "rabbit@"+rmcont1
-   cluster_nodes << "rabbit@"+rmcont2
-   cluster_nodes << "rabbit@"+rmcont3
+   rmcont1hostname = rmcont1.split('.')
+   rmcont2hostname = rmcont2.split('.')
+   rmcont3hostname = rmcont3.split('.')
+   cluster_nodes << "rabbit@"+rmcont1hostname[0]
+   cluster_nodes << "rabbit@"+rmcont2hostname[0]
+   cluster_nodes << "rabbit@"+rmcont3hostname[0]
    node.default['rabbitmq']['cluster_disk_nodes'] = cluster_nodes
   #End of cluster cluster address config
 
@@ -205,21 +208,21 @@ service node['rabbitmq']['service_name'] do
       action [ :enable, :start ]
 end
 
-rmcont1hostname = rmcont1.split('.')
-rmcont2hostname = rmcont2.split('.')
-rmcont3hostname = rmcont3.split('.')
+#rmcont1hostname = rmcont1.split('.')
+#rmcont2hostname = rmcont2.split('.')
+#rmcont3hostname = rmcont3.split('.')
 
 
-if node[:hostname] == rmcont2hostname[0]
-  execute "join-cluster1" do
-     command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
-  end
-end
+#if node[:hostname] == rmcont2hostname[0]
+  #execute "join-cluster1" do
+     #command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
+  #end
+#end
 
-if node[:hostname] == rmcont3hostname[0]
-  execute "join-cluster2" do
-     command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
-  end
-end
+#if node[:hostname] == rmcont3hostname[0]
+  #execute "join-cluster2" do
+     #command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
+  #end
+#end
 
 

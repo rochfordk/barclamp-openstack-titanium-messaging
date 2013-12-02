@@ -31,3 +31,9 @@ template "/etc/nagios/nrpe.d/rabbitmq_nrpe.cfg" do
    notifies :restart, "service[nagios-nrpe-server]"
 end if node["roles"].include?("nagios-client")    
 
+cookbook_file "/usr/lib/nagios/plugins/check_rabbit_cluster.py" do
+  source "check_rabbit_cluster.py"
+  mode 00755
+  owner "root"
+  group "root"
+end
