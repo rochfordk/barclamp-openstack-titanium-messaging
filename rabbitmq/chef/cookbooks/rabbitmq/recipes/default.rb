@@ -204,9 +204,9 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
   end
 end
 
-service node['rabbitmq']['service_name'] do
-      action [ :enable, :start ]
-end
+#service node['rabbitmq']['service_name'] do
+#      action [ :enable, :start ]
+#end
 
 #rmcont1hostname = rmcont1.split('.')
 #rmcont2hostname = rmcont2.split('.')
