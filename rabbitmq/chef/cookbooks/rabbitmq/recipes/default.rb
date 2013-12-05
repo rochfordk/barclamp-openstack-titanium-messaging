@@ -59,7 +59,7 @@ when 'debian'
       owner 'root'
       group 'root'
       mode 0644
-      variables(:max_file_descriptors => node['rabbitmq']['max_file_descriptors'])
+      variables(:max_file_descriptors => node['rabbitmq']['max_file_descriptors']).strip
     end
 
     service node['rabbitmq']['service_name'] do
