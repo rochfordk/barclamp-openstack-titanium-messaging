@@ -159,12 +159,23 @@ template "#{node['rabbitmq']['config_root']}/rabbitmq.config" do
 end
 
 if File.exists?(node['rabbitmq']['erlang_cookie_path'])
-  existing_erlang_key =  File.read(node['rabbitmq']['erlang_cookie_path'])
+  log "RabbitMQ - Setting erlang key from existing key file. Key: #{File.read(node['rabbitmq']['erlang_cookie_path'])}" do
+    level :info
+  end
+  existing_erlang_key =  File.read(node['rabbitmq']['erlang_cookie_path']).strip
 else
+  log "RabbitMQ - Setting erlang key to empty string" do
+    level :info
+  end
   existing_erlang_key = ''
 end
 
 if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)
+   if (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)
+     log "RabbitMQ - Existing erlang Key does not match chef attribute key value"
+   else
+     log "RabbitMQ - Existing erlang Key matches chef attribute key value. HOW DID I GET HERE"
+   end
   # get ip addresses - Barclamp proposal needs to be coded and not hard coded
    service_name = node[:rabbitmq][:config][:environment]
    proposal_name = service_name.split('-')
@@ -185,7 +196,7 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
 
   log "stopping service[#{node['rabbitmq']['service_name']}] to change erlang_cookie" do
     level :info
-    notifies :stop, "service[#{node['rabbitmq']['service_name']}]", :immediately
+    #notifies :stop, "service[#{node['rabbitmq']['service_name']}]", :immediately
   end
 
   template node['rabbitmq']['erlang_cookie_path'] do
@@ -199,7 +210,8 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
 
   # Need to reset for clustering #
   execute "reset-node" do
-    command "rabbitmqctl stop_app && rabbitmqctl reset && rabbitmqctl stop && setsid /etc/init.d/rabbitmq-server start"
+    command "rabbitmqctl stop_app && rabbitmqctl reset && rabbitmqctl start_app"
+    #command "rabbitmqctl stop_app && rabbitmqctl reset && rabbitmqctl stop && setsid /etc/init.d/rabbitmq-server start"
     action :nothing
   end
 end
