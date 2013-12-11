@@ -59,7 +59,7 @@ when 'debian'
       owner 'root'
       group 'root'
       mode 0644
-      variables(:max_file_descriptors => node['rabbitmq']['max_file_descriptors'])
+      variables(:max_file_descriptors => node['rabbitmq']['max_file_descriptors']).strip
     end
 
     service node['rabbitmq']['service_name'] do
@@ -159,7 +159,7 @@ template "#{node['rabbitmq']['config_root']}/rabbitmq.config" do
 end
 
 if File.exists?(node['rabbitmq']['erlang_cookie_path'])
-  existing_erlang_key =  File.read(node['rabbitmq']['erlang_cookie_path'])
+  existing_erlang_key =  File.read(node['rabbitmq']['erlang_cookie_path']).strip
 else
   existing_erlang_key = ''
 end
@@ -174,9 +174,12 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
    rmcont2 = getrmip_db["deployment"]["rabbitmq"]["elements"]["rabbitmq"][1]
    rmcont3 = getrmip_db["deployment"]["rabbitmq"]["elements"]["rabbitmq"][2]
    cluster_nodes = Array.new
-   cluster_nodes << "rabbit@"+rmcont1
-   cluster_nodes << "rabbit@"+rmcont2
-   cluster_nodes << "rabbit@"+rmcont3
+   rmcont1hostname = rmcont1.split('.')
+   rmcont2hostname = rmcont2.split('.')
+   rmcont3hostname = rmcont3.split('.')
+   cluster_nodes << "rabbit@"+rmcont1hostname[0]
+   cluster_nodes << "rabbit@"+rmcont2hostname[0]
+   cluster_nodes << "rabbit@"+rmcont3hostname[0]
    node.default['rabbitmq']['cluster_disk_nodes'] = cluster_nodes
   #End of cluster cluster address config
 
@@ -205,21 +208,21 @@ service node['rabbitmq']['service_name'] do
       action [ :enable, :start ]
 end
 
-rmcont1hostname = rmcont1.split('.')
-rmcont2hostname = rmcont2.split('.')
-rmcont3hostname = rmcont3.split('.')
+#rmcont1hostname = rmcont1.split('.')
+#rmcont2hostname = rmcont2.split('.')
+#rmcont3hostname = rmcont3.split('.')
 
 
-if node[:hostname] == rmcont2hostname[0]
-  execute "join-cluster1" do
-     command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
-  end
-end
+#if node[:hostname] == rmcont2hostname[0]
+  #execute "join-cluster1" do
+     #command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
+  #end
+#end
 
-if node[:hostname] == rmcont3hostname[0]
-  execute "join-cluster2" do
-     command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
-  end
-end
+#if node[:hostname] == rmcont3hostname[0]
+  #execute "join-cluster2" do
+     #command "rabbitmqctl -q stop_app && rabbitmqctl -q join_cluster rabbit@"+rmcont1hostname[0]+" && rabbitmqctl -q start_app"
+  #end
+#end
 
 
